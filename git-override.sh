@@ -28,7 +28,7 @@ function __git_intercept_run_hook() {
         local command_with_hooks=" commit checkout merge "
     fi
     local command_token=" $git_cmd "
-    if [[ "${command_with_hooks/command_token}" == "$command_with_hooks" ]]; then
+    if [[ "${command_with_hooks/$command_token}" == "$command_with_hooks" ]]; then
         if [ -x "$prehook_command" ]; then
             $prehook_command
             local ret_code=$?
