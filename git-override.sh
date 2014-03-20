@@ -2,10 +2,18 @@ function git() {
     if [[ $# -eq 0 ]]; then
         command git
     else
-        __git_intercept_hook "pre" $1 $2
+        local hook=true
+        if [[ $1 == "--no-hook" ]]; then
+            hook=false
+            shift
+        else
+            __git_intercept_hook "pre" $1 $2
+        fi
         if [[ "$?" -eq 0 ]]; then
             command git "$@"
-            __git_intercept_hook "post" $1 $2
+            if [[ $hook ]]; then
+                __git_intercept_hook "post" $1 $2
+            fi
         fi
     fi
 }
