@@ -82,8 +82,9 @@ function __git_intercept_hook() {
         return 0
     fi
     __git_intercept_run_hook "$hook_type" "$git_cmd" "$svn_cmd"
-    if [[ "$?" -ne 0 ]]; then
-        return "$?"
+    local ret_code=$?
+    if [[ "$ret_code" -ne 0 ]]; then
+        return "$ret_code"
     fi
 
     local alias_cmd=$(__git_intercept_get_alias_cmd $git_cmd)
