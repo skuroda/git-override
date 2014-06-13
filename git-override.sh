@@ -1,4 +1,5 @@
 function git() {
+    local ret=0
     if [[ $# -eq 0 ]]; then
         command git
     else
@@ -8,9 +9,14 @@ function git() {
             shift
         else
             __git_intercept_hook "pre" $1 $2
+            ret=$?
         fi
-        if [[ "$?" -eq 0 ]]; then
+        if [[ "$ret" -eq 0 ]]; then
             command git "$@"
+            ret=$?
+            if [[ "$ret" -ne 0 ]]; then
+                return $ret
+            fi
             if [[ $hook ]]; then
                 __git_intercept_hook "post" $1 $2
             fi
